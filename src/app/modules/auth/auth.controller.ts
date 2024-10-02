@@ -49,7 +49,28 @@ const refreshTokenController = async (
     }
 };
 
+const passwordResetController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const { email } = req.body;
+        const result = await AuthServices.passwordReset(email);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "please check your email",
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const AuthController = {
     LoginUser,
     refreshTokenController,
+    passwordResetController
 };

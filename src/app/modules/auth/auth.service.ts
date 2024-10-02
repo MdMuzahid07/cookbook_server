@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from "http-status";
 import UserModel from "../user/user.model";
 import { TLogin } from "./auth.interface";
@@ -5,7 +6,7 @@ import CustomAppError from "../../errors/CustomAppError";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../config";
-
+import { transporter } from "../../utils/mailTransporter";
 
 const LoginUser = async (payload: TLogin) => {
     const { email, password } = payload;
@@ -109,7 +110,46 @@ const refreshTokenService = async (token: string) => {
     };
 };
 
+
+const passwordReset = async (payload: any) => {
+    const user = await UserModel.findOne({ email: payload });
+
+    console.log(user);
+
+    if (!user) {
+        throw new CustomAppError(httpStatus.BAD_REQUEST, "user not exists");
+    }
+
+    // create a reset token 
+    const resetToken = jwt.sign(
+        { userId: user._id },
+        config.jwt_reset_password_secret_key as string,
+        { expiresIn: '30m' }
+    );
+
+    // send mail 
+
+    const resetLink = `${config.frontend_url}/change-password/${resetToken}`;
+
+    const res = await transporter.sendMail({
+        from: "mdmuzahid7396@gmail.com",
+        to: user.email,
+        subject: 'Password Reset',
+        html: `
+        <div>
+        <h1 style="text-align:center;margin-bottom:1rem">Reset your password</h1>
+        <p style="text-align:center">this link will be invalid in 30 minutes</p>
+         <a style="color:blue; text-align:center" href="${resetLink}">Reset Password</a>
+        </div>
+        `,
+    });
+
+    return { res: `mail send to ${res.accepted}` };
+};
+
+
 export const AuthServices = {
     LoginUser,
     refreshTokenService,
+    passwordReset
 };

@@ -11,8 +11,12 @@ const refreshTokenValidationSchema = z.object({
     }).optional()
 });
 
+const passwordResetValidationSchema = z.object({
+    email: z.string(),
+});
 
 export const AuthValidation = {
     LoginDataValidation,
     refreshTokenValidationSchema,
+    passwordResetValidationSchema
 };
