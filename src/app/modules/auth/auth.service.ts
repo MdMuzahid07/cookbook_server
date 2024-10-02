@@ -111,6 +111,7 @@ const refreshTokenService = async (token: string) => {
 };
 
 
+// this service for password recovery request
 const passwordReset = async (payload: any) => {
     const user = await UserModel.findOne({ email: payload });
 
@@ -148,7 +149,7 @@ const passwordReset = async (payload: any) => {
     return { res: `${response ? `mail send to ${response?.accepted}` : response}` };
 };
 
-
+// this service for password recovery
 const resetThePassword = async (password: string, token: string) => {
     // Verify the reset token
     const decoded = jwt.verify(token, config.jwt_reset_password_secret_key as string);
@@ -169,9 +170,47 @@ const resetThePassword = async (password: string, token: string) => {
     return res;
 };
 
+// this service for change the current password
+const changeCurrentPassword = async (currentPass: string, newPass: string, token: any) => {
+
+    if (!token) {
+        throw new CustomAppError(httpStatus.UNAUTHORIZED, "you are not authorized to change password");
+    };
+
+    const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
+
+    const userId = decoded?.id;
+    const currentPassFromToken = decoded?.password;
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+        throw new CustomAppError(httpStatus.BAD_REQUEST, "user not exists");
+    }
+
+    const isPasswordMatched = await bcrypt.compare(currentPass, currentPassFromToken);
+
+    if (!isPasswordMatched) {
+        throw new CustomAppError(
+            httpStatus.BAD_REQUEST,
+            "current password not matched, please remember and try again",
+        );
+    }
+
+    // changing the current password with the newPass
+    const hashedNewPassword = await bcrypt.hash(newPass, 12);
+    user.password = hashedNewPassword;
+
+    const res = await user.save();
+
+    return res;
+};
+
+
+
 export const AuthServices = {
     LoginUser,
     refreshTokenService,
     passwordReset,
-    resetThePassword
+    resetThePassword,
+    changeCurrentPassword
 };

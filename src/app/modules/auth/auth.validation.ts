@@ -19,9 +19,15 @@ const resetPasswordValidationSchema = z.object({
     password: z.string(),
 });
 
+const changeCurrentPasswordValidationSchema = z.object({
+    currentPass: z.string(),
+    newPass: z.string()
+});
+
 export const AuthValidation = {
     LoginDataValidation,
     refreshTokenValidationSchema,
     passwordResetValidationSchema,
-    resetPasswordValidationSchema
+    resetPasswordValidationSchema,
+    changeCurrentPasswordValidationSchema
 };

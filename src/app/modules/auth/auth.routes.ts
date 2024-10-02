@@ -29,4 +29,11 @@ router.post(
     AuthController.resetThePasswordController,
 );
 
+router.post(
+    "/change-password",
+    requestValidator(AuthValidation.changeCurrentPasswordValidationSchema),
+    AuthController.changeCurrentPasswordController,
+);
+
+
 export const LoginRoute = router;

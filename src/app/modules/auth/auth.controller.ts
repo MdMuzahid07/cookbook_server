@@ -87,9 +87,29 @@ const resetThePasswordController = async (req: Request, res: Response, next: Nex
     }
 };
 
+
+const changeCurrentPasswordController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { currentPass, newPass } = req.body;
+        const token = req.headers.authorization;
+        const result = await AuthServices.changeCurrentPassword(currentPass, newPass, token);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "password changed successfully",
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 export const AuthController = {
     LoginUser,
     refreshTokenController,
     passwordResetController,
-    resetThePasswordController
+    resetThePasswordController,
+    changeCurrentPasswordController
 };
