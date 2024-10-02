@@ -114,15 +114,16 @@ const refreshTokenService = async (token: string) => {
 const passwordReset = async (payload: any) => {
     const user = await UserModel.findOne({ email: payload });
 
-    console.log(user);
-
     if (!user) {
         throw new CustomAppError(httpStatus.BAD_REQUEST, "user not exists");
     }
 
     // create a reset token 
     const resetToken = jwt.sign(
-        { userId: user._id },
+        {
+            userId: user._id,
+            email: user.email
+        },
         config.jwt_reset_password_secret_key as string,
         { expiresIn: '30m' }
     );
@@ -131,7 +132,7 @@ const passwordReset = async (payload: any) => {
 
     const resetLink = `${config.frontend_url}/change-password/${resetToken}`;
 
-    const res = await transporter.sendMail({
+    const response = await transporter.sendMail({
         from: "mdmuzahid7396@gmail.com",
         to: user.email,
         subject: 'Password Reset',
@@ -144,12 +145,33 @@ const passwordReset = async (payload: any) => {
         `,
     });
 
-    return { res: `mail send to ${res.accepted}` };
+    return { res: `${response ? `mail send to ${response?.accepted}` : response}` };
 };
 
+
+const resetThePassword = async (password: string, token: string) => {
+    // Verify the reset token
+    const decoded = jwt.verify(token, config.jwt_reset_password_secret_key as string);
+
+    const userId = decoded?.userId;
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+        throw new CustomAppError(httpStatus.BAD_REQUEST, "user not exists");
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // Update the password in the database
+    user.password = hashedPassword;
+    const res = await user.save();
+    return res;
+};
 
 export const AuthServices = {
     LoginUser,
     refreshTokenService,
-    passwordReset
+    passwordReset,
+    resetThePassword
 };

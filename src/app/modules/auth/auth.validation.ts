@@ -15,8 +15,13 @@ const passwordResetValidationSchema = z.object({
     email: z.string(),
 });
 
+const resetPasswordValidationSchema = z.object({
+    password: z.string(),
+});
+
 export const AuthValidation = {
     LoginDataValidation,
     refreshTokenValidationSchema,
-    passwordResetValidationSchema
+    passwordResetValidationSchema,
+    resetPasswordValidationSchema
 };
