@@ -3,6 +3,8 @@ import cors from "cors";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import NotFound from "./app/middlewares/notFound";
 import cookieParser from "cookie-parser";
+import router from "./app/routes";
+import config from "./app/config";
 
 
 const app: Application = express();
@@ -10,16 +12,16 @@ const app: Application = express();
 // parsers
 app.use(express.json());
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:4173"], credentials: true
+  origin: ["http://localhost:3000"], credentials: true
 }));
 app.use(cookieParser());
 
 // application routes
-
+app.use("/api/v1", router);
 
 // test route
 app.get("/", (req: Request, res: Response) => {
-  res.send("Server running");
+  res.send(`🚀 server running on port ${config.port}`);
 });
 
 // global error handler
