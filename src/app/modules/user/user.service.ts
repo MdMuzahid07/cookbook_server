@@ -22,6 +22,8 @@ const createUserIntoDB = async (payload: TUser) => {
     const jwtPayload = {
         email: payload?.email,
         role: payload?.role,
+        name: payload?.name,
+        avatar: payload?.avatar
     };
 
     const accessToken = jwt.sign(
@@ -34,7 +36,6 @@ const createUserIntoDB = async (payload: TUser) => {
         config.jwt_refresh_token_secret_key as string,
         { expiresIn: config.jwt_refresh_token_expires_in },
     );
-
 
     const salt = bcrypt.genSaltSync(Number(config.bcrypt_salt_round));
     const hash = bcrypt.hashSync(payload?.password, salt);
