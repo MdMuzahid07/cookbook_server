@@ -19,4 +19,11 @@ router.patch(
 );
 
 
+router.post(
+    "/follow/:id",
+    requestValidator(UserValidation.UpdateUserValidationSchema),
+    UserController.followAUserController
+);
+
+
 export const UserRoutes = router;

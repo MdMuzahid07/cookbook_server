@@ -51,8 +51,28 @@ const updateUserInfoController = async (
 };
 
 
+const followAUserController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const token = req.headers.authorization;
+        const targetUserId = req.params.id;
+
+        const result = await UserService.followAUser(token, targetUserId);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "user followed",
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 
 export const UserController = {
     createUser,
-    updateUserInfoController
+    updateUserInfoController,
+    followAUserController
 };

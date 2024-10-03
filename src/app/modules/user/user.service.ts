@@ -4,7 +4,7 @@ import CustomAppError from "../../errors/CustomAppError";
 import { TUser } from "./user.interface";
 import bcrypt from "bcrypt";
 import config from "../../config";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import UserModel from "./user.model";
 
 const createUserIntoDB = async (payload: TUser) => {
@@ -108,7 +108,45 @@ const updateAUserInfoFromDB = async (id: string, payload: any) => {
 
 
 
+const followAUser = async (token: any, targetUserId: any) => {
+
+    if (!token) {
+        throw new CustomAppError(httpStatus.UNAUTHORIZED, "you are not authorized to follow the user");
+    };
+
+    const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
+
+    const userId = decoded?.id;
+
+    const currentUser = await UserModel.findById(userId);
+    const targetUser = await UserModel.findById(targetUserId);
+
+    if (!currentUser?.following.includes(targetUserId)) {
+        // Adding to the following list
+        currentUser?.following.push(targetUserId);
+        const resFollowingList = await currentUser?.save();
+
+        // Add current user to the target users  followers list to 
+        targetUser?.followers.push(userId);
+        const resFollowerList = await targetUser?.save();
+
+        return {
+            resFollowingList,
+            resFollowerList
+        };
+    }
+};
+
+
+// const unFollowAUser = async () => {
+
+// };
+
+
+
 export const UserService = {
     createUserIntoDB,
-    updateAUserInfoFromDB
+    updateAUserInfoFromDB,
+    followAUser,
+    // unFollowAUser
 };
