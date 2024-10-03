@@ -27,6 +27,32 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+
+const updateUserInfoController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const { id } = req.params;
+        const payload = req.body;
+
+        const result = await UserService.updateAUserInfoFromDB(id, payload);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "user info updated successfully",
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
 export const UserController = {
     createUser,
+    updateUserInfoController
 };

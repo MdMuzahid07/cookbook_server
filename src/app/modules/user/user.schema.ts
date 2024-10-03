@@ -19,6 +19,12 @@ const UserSchema = new Schema(
             required: true,
             minlength: 6,
         },
+        bio: {
+            type: String,
+            required: true,
+            maxLength: 500,
+            default: "I'm an great person, with good personality"
+        },
         role: {
             type: String,
             enum: ["admin", "user"],

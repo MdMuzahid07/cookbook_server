@@ -12,4 +12,11 @@ router.post(
 );
 
 
+router.patch(
+    "/update/:id",
+    requestValidator(UserValidation.UpdateUserValidationSchema),
+    UserController.updateUserInfoController
+);
+
+
 export const UserRoutes = router;

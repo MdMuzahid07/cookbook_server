@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from "http-status";
 import CustomAppError from "../../errors/CustomAppError";
 import { TUser } from "./user.interface";
@@ -65,6 +66,49 @@ const createUserIntoDB = async (payload: TUser) => {
     };
 };
 
+
+
+const updateAUserInfoFromDB = async (id: string, payload: any) => {
+
+    if (!id) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "id is required to update profile info");
+    }
+
+    if (!payload) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "data is required to update the profile");
+    }
+
+    const isUserExists = await UserModel.findById({ _id: id });
+
+    if (!isUserExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "this user not exists to update");
+    }
+
+    const profileInfoUpdateResponse = await UserModel.findByIdAndUpdate(
+        id,
+        // we use $set operator to update specific field
+        { $set: payload },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+
+    const result = profileInfoUpdateResponse?.toObject() as Partial<TUser>;
+
+    // removing some property from response after save into DB
+    if (result) {
+        delete result.__v;
+        delete result.createdAt;
+        delete result.updatedAt;
+    };
+
+    return result;
+};
+
+
+
 export const UserService = {
     createUserIntoDB,
+    updateAUserInfoFromDB
 };
