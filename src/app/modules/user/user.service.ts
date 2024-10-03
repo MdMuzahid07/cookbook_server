@@ -135,6 +135,12 @@ const followAUser = async (token: any, targetUserId: any) => {
             resFollowerList
         };
     }
+
+    // checking this user already followed 
+    if (currentUser?.following.includes(targetUserId)) {
+        throw new CustomAppError(httpStatus.BAD_REQUEST, "you already followed this user");
+    }
+
 };
 
 
