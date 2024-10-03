@@ -69,10 +69,29 @@ const followAUserController = async (req: Request, res: Response, next: NextFunc
     }
 };
 
+const unFollowAUserController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const token = req.headers.authorization;
+        const targetUserId = req.params.id;
+
+        const result = await UserService.unFollowAUser(token, targetUserId);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "user un followed",
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 
 export const UserController = {
     createUser,
     updateUserInfoController,
-    followAUserController
+    followAUserController,
+    unFollowAUserController
 };

@@ -25,5 +25,11 @@ router.post(
     UserController.followAUserController
 );
 
+router.post(
+    "/un-follow/:id",
+    requestValidator(UserValidation.UpdateUserValidationSchema),
+    UserController.unFollowAUserController
+);
+
 
 export const UserRoutes = router;

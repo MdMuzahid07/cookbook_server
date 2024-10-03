@@ -4,7 +4,7 @@ import CustomAppError from "../../errors/CustomAppError";
 import { TUser } from "./user.interface";
 import bcrypt from "bcrypt";
 import config from "../../config";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import UserModel from "./user.model";
 
 const createUserIntoDB = async (payload: TUser) => {
@@ -138,15 +138,71 @@ const followAUser = async (token: any, targetUserId: any) => {
 };
 
 
-// const unFollowAUser = async () => {
+const unFollowAUser = async (token: any, targetUserId: any) => {
 
-// };
+    if (!token) {
+        throw new CustomAppError(httpStatus.UNAUTHORIZED, "you are not authorized to un follow the user");
+    };
 
+    const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
+
+    const userId = decoded?.id;
+
+    const isCurrentUserExists = await UserModel.findById(userId);
+    const isTargetUserExists = await UserModel.findById(targetUserId);
+
+    if (!isCurrentUserExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "current user not exists");
+    };
+
+    if (!isTargetUserExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "target user not exists");
+    };
+
+
+    if (userId === targetUserId) {
+        throw new CustomAppError(httpStatus.BAD_REQUEST, "you are not able to un follow yourself");
+    };
+
+    // updating both user by removing follower and following
+
+    // who is following
+    const currentUser = await UserModel.findByIdAndUpdate(
+        userId,
+        {
+            $pull: { following: targetUserId }
+        },
+        {
+            new: true
+        }
+    );
+
+
+    // who is followed
+
+    const targetUser = await UserModel.findByIdAndUpdate(
+        targetUserId,
+        {
+            $pull: { followers: userId }
+        },
+        {
+            new: true
+        }
+    );
+
+    /* it ensure all the promise resolved by waiting, if any of this promise reject it will reject all promises */
+    await Promise.all([currentUser, targetUser]);
+
+    return {
+        currentUser,
+        targetUser
+    };
+};
 
 
 export const UserService = {
     createUserIntoDB,
     updateAUserInfoFromDB,
     followAUser,
-    // unFollowAUser
+    unFollowAUser
 };
