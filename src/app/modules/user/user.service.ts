@@ -19,8 +19,23 @@ const createUserIntoDB = async (payload: TUser) => {
     }
 
 
+    const salt = bcrypt.genSaltSync(Number(config.bcrypt_salt_round));
+    const hash = bcrypt.hashSync(payload?.password, salt);
+
+    const user = <TUser>{
+        ...payload,
+        password: hash,
+    };
+
+    const responseAfterSave = await UserModel.create(user);
+
+    const result = responseAfterSave.toObject() as Partial<TUser>;
+
+    const registeredUserId = result?._id?.toString();
+
     // jwt 
     const jwtPayload = {
+        id: registeredUserId,
         email: payload?.email,
         role: payload?.role,
         name: payload?.name,
@@ -38,17 +53,6 @@ const createUserIntoDB = async (payload: TUser) => {
         { expiresIn: config.jwt_refresh_token_expires_in },
     );
 
-    const salt = bcrypt.genSaltSync(Number(config.bcrypt_salt_round));
-    const hash = bcrypt.hashSync(payload?.password, salt);
-
-    const user = <TUser>{
-        ...payload,
-        password: hash,
-    };
-
-    const responseAfterSave = await UserModel.create(user);
-
-    const result = responseAfterSave.toObject() as Partial<TUser>;
 
     // removing some property after saving to DB for clean response to client
     if (result) {

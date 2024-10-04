@@ -20,5 +20,5 @@ export default {
   aamarpay_payment_url: process.env.PAYMENT_URL,
   email_user: process.env.EMAIL_USER,
   email_pass: process.env.EMAIL_PASS,
-  frontend_url: process.env.FRONTEND_URL
+  frontend_url: process.env.FRONTEND_URL,
 };

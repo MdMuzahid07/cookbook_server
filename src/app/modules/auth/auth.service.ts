@@ -42,6 +42,7 @@ const LoginUser = async (payload: TLogin) => {
         email: isUserExistsOnDB?.email,
         password: isUserExistsOnDB?.password,
         role: isUserExistsOnDB?.role,
+        avatar: isUserExistsOnDB?.avatar,
     };
 
     const accessToken = jwt.sign(

@@ -41,12 +41,17 @@ const UserSchema = new Schema<TUser>(
         },
         followers: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
+            ref: 'User',
         }],
         following: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
+            ref: 'User',
         }],
+        // membership: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     default: "free",
+        //     ref: "Membership"
+        // }
     },
     {
         timestamps: true,
