@@ -9,8 +9,8 @@ const paymentInitialization = async (paymentInfo: any) => {
         store_id: config.aamarpay_store_id,
         signature_key: config.aamarpay_signature_key,
         tran_id: paymentInfo?.transactionId,
-        success_url: `${config.aamarpay_success_url}?transactionId=${paymentInfo?.transactionId}`,
-        fail_url: config.aamarpay_fail_url,
+        success_url: `${config.aamarpay_success_url}?transactionId=${paymentInfo?.transactionId}&paymentStatus=success`,
+        fail_url: `${config.aamarpay_success_url}?paymentStatus=failed`,
         cancel_url: config.aamarpay_cancel_url,
         amount: paymentInfo?.payableAmount,
         currency: "BDT",
@@ -31,6 +31,22 @@ const paymentInitialization = async (paymentInfo: any) => {
 
     return res?.data;
 };
+
+
+export const paymentVerification = async (tnxId: any) => {
+    const response = await axios.get(config.aamarpay_payment_verify_url as string, {
+        params: {
+            store_id: config.aamarpay_store_id,
+            signature_key: config.aamarpay_signature_key,
+            type: "json",
+            request_id: tnxId
+        }
+    });
+
+    return response.data;
+};
+
+
 
 
 export default paymentInitialization;

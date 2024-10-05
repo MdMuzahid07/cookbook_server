@@ -18,6 +18,7 @@ export default {
   aamarpay_store_id: process.env.STORE_ID,
   aamarpay_signature_key: process.env.SIGNATURE_KEY,
   aamarpay_payment_url: process.env.PAYMENT_URL,
+  aamarpay_payment_verify_url: process.env.PAYMENT_VERIFY_URL,
   email_user: process.env.EMAIL_USER,
   email_pass: process.env.EMAIL_PASS,
   frontend_url: process.env.FRONTEND_URL,
