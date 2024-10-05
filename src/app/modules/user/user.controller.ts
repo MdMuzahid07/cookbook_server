@@ -7,7 +7,8 @@ import httpStatus from "http-status";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { accessToken, refreshToken, user } = await UserService.createUserIntoDB(req.body);
+
+        const { accessToken, refreshToken, user } = await UserService.createUserIntoDB(req.file, req.body);
 
         // for saving refresh token in browser cookie
         res.cookie("refreshToken", refreshToken, {

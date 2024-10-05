@@ -7,7 +7,7 @@ import config from "../../config";
 import jwt from "jsonwebtoken";
 import UserModel from "./user.model";
 
-const createUserIntoDB = async (payload: TUser) => {
+const createUserIntoDB = async (file: any, payload: TUser) => {
     const isUserExists = await UserModel.findOne({ email: payload?.email });
 
     // checking user exist or not
@@ -22,12 +22,16 @@ const createUserIntoDB = async (payload: TUser) => {
     const salt = bcrypt.genSaltSync(Number(config.bcrypt_salt_round));
     const hash = bcrypt.hashSync(payload?.password, salt);
 
-    const user = <TUser>{
+    const userData = <TUser>{
         ...payload,
-        password: hash,
+        password: hash
     };
 
-    const responseAfterSave = await UserModel.create(user);
+    if (file) {
+        userData.avatar = file?.path;
+    };
+
+    const responseAfterSave = await UserModel.create(userData);
 
     const result = responseAfterSave.toObject() as Partial<TUser>;
 

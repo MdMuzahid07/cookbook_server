@@ -25,4 +25,7 @@ export default {
   aamarpay_success_url: process.env.SUCCESS_URL,
   aamarpay_fail_url: process.env.FAIL_URL,
   aamarpay_cancel_url: process.env.CANCEL_URL,
+  cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+  cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
 };
