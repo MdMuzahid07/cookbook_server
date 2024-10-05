@@ -22,7 +22,7 @@ const membershipSchema = new Schema<TMembership>({
     },
     subscription: {
         type: String,
-        enum: ["1 Month", "3 Months", "6 Months", "1 Year"],
+        enum: ["1 Month", "3 Months", "6 Months", "12 Months"],
     },
     // status will be active after successful payment
     status: {

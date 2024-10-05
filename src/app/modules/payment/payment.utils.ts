@@ -9,7 +9,7 @@ const paymentInitialization = async (paymentInfo: any) => {
         store_id: config.aamarpay_store_id,
         signature_key: config.aamarpay_signature_key,
         tran_id: paymentInfo?.transactionId,
-        success_url: config.aamarpay_success_url,
+        success_url: `${config.aamarpay_success_url}?transactionId=${paymentInfo?.transactionId}`,
         fail_url: config.aamarpay_fail_url,
         cancel_url: config.aamarpay_cancel_url,
         amount: paymentInfo?.payableAmount,
