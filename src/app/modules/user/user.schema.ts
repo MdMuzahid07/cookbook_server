@@ -47,11 +47,11 @@ const UserSchema = new Schema<TUser>(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         }],
-        // membership: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     default: "free",
-        //     ref: "Membership"
-        // }
+        membership: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Membership",
+            default: null
+        }
     },
     {
         timestamps: true,

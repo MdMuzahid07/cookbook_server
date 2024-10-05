@@ -21,4 +21,7 @@ export default {
   email_user: process.env.EMAIL_USER,
   email_pass: process.env.EMAIL_PASS,
   frontend_url: process.env.FRONTEND_URL,
+  aamarpay_success_url: process.env.SUCCESS_URL,
+  aamarpay_fail_url: process.env.FAIL_URL,
+  aamarpay_cancel_url: process.env.CANCEL_URL,
 };

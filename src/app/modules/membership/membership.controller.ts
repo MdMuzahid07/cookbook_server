@@ -4,17 +4,17 @@ import httpStatus from "http-status";
 import { MembershipService } from "./membership.service";
 
 
-const checkOutSessionController = async (req: Request, res: Response, next: NextFunction) => {
+const createMembership = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { priceId, userId } = req.body;
+        const payload = req.body;
 
-        const sessionId = await MembershipService.checkOutSessionService(priceId, userId);
+        const result = await MembershipService.createMembershipIntoDB(payload);
 
         sendResponse(res, {
             success: true,
             statusCode: httpStatus.OK,
-            message: "session created successfully",
-            data: sessionId,
+            message: "membership created successfully",
+            data: result,
         });
     } catch (error) {
         next(error);
@@ -24,5 +24,5 @@ const checkOutSessionController = async (req: Request, res: Response, next: Next
 
 
 export const MembershipController = {
-    checkOutSessionController
+    createMembership
 };

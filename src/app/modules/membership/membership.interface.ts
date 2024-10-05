@@ -2,10 +2,10 @@ import { Types } from "mongoose";
 
 export type TMembership = {
     userId: Types.ObjectId;
-    membershipType: "free" | "premium";
-    paymentId?: string;
-    paymentMethod?: "aamarpay";
+    paymentMethod?: string;
     startDate: Date;
-    endDate: Date;
-    activeStatus: boolean;
+    endDate?: Date | null;
+    subscription?: string;
+    status: string;
+    transactionId?: string;
 };
