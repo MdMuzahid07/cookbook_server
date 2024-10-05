@@ -18,7 +18,6 @@ const createUserIntoDB = async (file: any, payload: TUser) => {
         );
     }
 
-
     const salt = bcrypt.genSaltSync(Number(config.bcrypt_salt_round));
     const hash = bcrypt.hashSync(payload?.password, salt);
 
