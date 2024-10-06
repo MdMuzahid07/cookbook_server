@@ -108,11 +108,52 @@ const blockUnBlockUser = async (req: Request, res: Response, next: NextFunction)
 };
 
 
+const publishUnPublishRecipe = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const token = req.headers.authorization;
+        const targetRecipeId = req.params.id;
+
+        const result = await UserService.publishUnPublishRecipeFromDB(token, targetRecipeId);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: `recipe, ${result?.title} ${result?.isBlocked ? "unpublished" : "published"}`,
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+const promoteDemoteUserAdminByAdmin = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const token = req.headers.authorization;
+        const targetUserId = req.params.id;
+
+        const result = await UserService.promoteDemoteUserAdminByAdminFromDB(token, targetUserId);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: ` ${result?.name} ${result?.role === "user" ? "demoted as user" : " promoted as admin"}`,
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
 
 export const UserController = {
     createUser,
     updateUserInfoController,
     followAUserController,
     unFollowAUserController,
-    blockUnBlockUser
+    blockUnBlockUser,
+    publishUnPublishRecipe,
+    promoteDemoteUserAdminByAdmin
 };

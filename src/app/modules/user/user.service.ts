@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import config from "../../config";
 import jwt from "jsonwebtoken";
 import UserModel from "./user.model";
+import RecipeModel from "../Recipe/recipe.model";
 
 const createUserIntoDB = async (file: any, payload: TUser) => {
     const isUserExists = await UserModel.findOne({ email: payload?.email });
@@ -213,7 +214,7 @@ const unFollowAUser = async (token: any, targetUserId: any) => {
 
 const blockUnBlockUserFromDB = async (token: any, targetUserId: string) => {
     if (!token) {
-        throw new CustomAppError(httpStatus.UNAUTHORIZED, "you are not authorized to block the user");
+        throw new CustomAppError(httpStatus.UNAUTHORIZED, "you are not authorized to block or unblocked the user");
     };
 
     const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
@@ -250,10 +251,81 @@ const blockUnBlockUserFromDB = async (token: any, targetUserId: string) => {
 
 
 
+
+const publishUnPublishRecipeFromDB = async (token: any, recipeId: string) => {
+    if (!token) {
+        throw new CustomAppError(httpStatus.UNAUTHORIZED, "you are not authorized to publish or unpublish the user");
+    };
+
+    const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
+
+    const userId = (decoded as any)?.id;
+
+    const isCurrentUserExists = await UserModel.findById(userId);
+    const isRecipeExists = await RecipeModel.findById(recipeId);
+
+    if (!isCurrentUserExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "current user not exists");
+    };
+
+    if (!isRecipeExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "target recipe not exists");
+    };
+
+
+    const res = await RecipeModel.findByIdAndUpdate(
+        recipeId,
+        { $set: { isPublished: !isRecipeExists.isPublished } },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+
+    return res;
+};
+
+
+const promoteDemoteUserAdminByAdminFromDB = async (token: any, targetUserId: string) => {
+    if (!token) {
+        throw new CustomAppError(httpStatus.UNAUTHORIZED, "you are not authorized to promote or demote the user");
+    };
+
+    const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
+
+    const userId = (decoded as any)?.id;
+
+    const isCurrentUserExists = await UserModel.findById(userId);
+    const isTargetUserExists = await UserModel.findById(targetUserId);
+
+    if (!isCurrentUserExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "current user not exists");
+    };
+
+    if (!isTargetUserExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "target user not exists to promote to demote");
+    };
+
+
+    const res = await UserModel.findByIdAndUpdate(
+        targetUserId,
+        { $set: { role: isTargetUserExists?.role === "user" ? "admin" : "user" } },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+
+    return res;
+};
+
+
 export const UserService = {
     createUserIntoDB,
     updateAUserInfoFromDB,
     followAUser,
     unFollowAUser,
-    blockUnBlockUserFromDB
+    blockUnBlockUserFromDB,
+    publishUnPublishRecipeFromDB,
+    promoteDemoteUserAdminByAdminFromDB
 };

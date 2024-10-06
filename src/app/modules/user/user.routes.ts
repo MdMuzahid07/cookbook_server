@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.post(
     "/register",
+    authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
     multerUpload.single("avatar"),
     (req: Request, res: Response, next: NextFunction) => {
         req.body = JSON.parse(req.body.data);
@@ -22,19 +23,21 @@ router.post(
 
 router.patch(
     "/update/:id",
-    authorizationGuard(USER_ROLES.user),
+    authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
     requestValidator(UserValidation.UpdateUserValidationSchema),
     UserController.updateUserInfoController
 );
 
 router.post(
     "/follow/:id",
+    authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
     requestValidator(UserValidation.UpdateUserValidationSchema),
     UserController.followAUserController
 );
 
 router.post(
     "/un-follow/:id",
+    authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
     requestValidator(UserValidation.UpdateUserValidationSchema),
     UserController.unFollowAUserController
 );
@@ -46,6 +49,19 @@ router.patch(
     UserController.blockUnBlockUser
 );
 
+
+router.patch(
+    "/publish-unpublish-recipe/:id",
+    authorizationGuard(USER_ROLES.admin),
+    UserController.publishUnPublishRecipe
+);
+
+
+router.patch(
+    "/promote-demote-user/:id",
+    authorizationGuard(USER_ROLES.admin),
+    UserController.promoteDemoteUserAdminByAdmin
+);
 
 
 

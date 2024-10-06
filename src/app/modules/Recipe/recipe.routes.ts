@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post(
     "/create-recipe",
-    authorizationGuard(USER_ROLES.user),
+    authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
     multerUpload.single("image"),
     (req: Request, res: Response, next: NextFunction) => {
         req.body = JSON.parse(req.body.data);
@@ -28,13 +28,13 @@ router.get(
 
 router.delete(
     "/:id",
-    authorizationGuard(USER_ROLES.user),
+    authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
     RecipeController.deleteARecipe,
 );
 
 router.patch(
     "/:id",
-    authorizationGuard(USER_ROLES.user),
+    authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
     requestValidator(RecipeValidation.recipeUpdateValidationSchema),
     RecipeController.updateARecipe,
 );
