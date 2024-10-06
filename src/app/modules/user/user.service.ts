@@ -74,7 +74,6 @@ const createUserIntoDB = async (file: any, payload: TUser) => {
 };
 
 
-
 const updateAUserInfoFromDB = async (id: string, payload: any) => {
 
     if (!id) {
@@ -112,7 +111,6 @@ const updateAUserInfoFromDB = async (id: string, payload: any) => {
 
     return result;
 };
-
 
 
 const followAUser = async (token: any, targetUserId: any) => {
@@ -213,9 +211,49 @@ const unFollowAUser = async (token: any, targetUserId: any) => {
 };
 
 
+const blockUnBlockUserFromDB = async (token: any, targetUserId: string) => {
+    if (!token) {
+        throw new CustomAppError(httpStatus.UNAUTHORIZED, "you are not authorized to block the user");
+    };
+
+    const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
+
+    const userId = (decoded as any)?.id;
+
+    const isCurrentUserExists = await UserModel.findById(userId);
+    const isTargetUserExists = await UserModel.findById(targetUserId);
+
+    if (!isCurrentUserExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "current user not exists");
+    };
+
+    if (!isTargetUserExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "target user not exists");
+    };
+
+    if (userId === targetUserId) {
+        throw new CustomAppError(httpStatus.BAD_REQUEST, "you are not able to block yourself");
+    };
+
+
+    const res = await UserModel.findByIdAndUpdate(
+        targetUserId,
+        { $set: { isBlocked: !isTargetUserExists.isBlocked } },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+
+    return res;
+};
+
+
+
 export const UserService = {
     createUserIntoDB,
     updateAUserInfoFromDB,
     followAUser,
-    unFollowAUser
+    unFollowAUser,
+    blockUnBlockUserFromDB
 };

@@ -89,10 +89,30 @@ const unFollowAUserController = async (req: Request, res: Response, next: NextFu
 };
 
 
+const blockUnBlockUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const token = req.headers.authorization;
+        const targetUserId = req.params.id;
+
+        const result = await UserService.blockUnBlockUserFromDB(token, targetUserId);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: `user, ${result?.name} ${result?.isBlocked ? "blocked" : "unblocked"}`,
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 
 export const UserController = {
     createUser,
     updateUserInfoController,
     followAUserController,
-    unFollowAUserController
+    unFollowAUserController,
+    blockUnBlockUser
 };

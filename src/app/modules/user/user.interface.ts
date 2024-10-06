@@ -9,6 +9,7 @@ export type TUser = {
     role: "admin" | "user";
     avatar: string;
     isDeleted: boolean;
+    isBlocked: boolean;
     followers: Types.ObjectId[];
     following: Types.ObjectId[];
     membership?: Types.ObjectId;

@@ -39,6 +39,10 @@ const UserSchema = new Schema<TUser>(
             type: Boolean,
             default: false,
         },
+        isBlocked: {
+            type: Boolean,
+            default: false,
+        },
         followers: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
