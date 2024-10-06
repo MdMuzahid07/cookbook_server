@@ -7,8 +7,9 @@ import sendResponse from "../../utils/send.response";
 const createRecipe = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const payload = req.body;
+        const file = req.file;
 
-        const result = await RecipeService.createRecipeIntoDB(payload);
+        const result = await RecipeService.createRecipeIntoDB(file, payload);
 
         sendResponse(res, {
             success: true,

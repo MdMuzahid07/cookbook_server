@@ -42,7 +42,7 @@ export const recipeValidationSchema = z.object({
     description: z.string().min(1, "description is required"),
     ingredients: z.array(ingredientValidationSchema),
     instructions: z.array(z.string()).min(1, "at least one instruction is required"),
-    images: z.array(z.string()).optional(),
+    images: z.string().optional(),
     author: z.string().min(1, "author is required"),
     category: z.string().min(1, "category is required"),
     cookingTime: cookingTimeValidationSchema,
@@ -65,7 +65,7 @@ export const recipeValidationSchema = z.object({
 
 
 
-// update validaiton sechema 
+// update validation sechema 
 
 
 const ingredientUpdateValidationSchema = z.object({

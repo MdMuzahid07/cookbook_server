@@ -3,13 +3,36 @@
 import httpStatus from "http-status";
 import CustomAppError from "../../errors/CustomAppError";
 import RecipeModel from "./recipe.model";
+import UserModel from "../user/user.model";
 
-const createRecipeIntoDB = async (payload: any) => {
+const createRecipeIntoDB = async (file: any, payload: any) => {
 
-    const res = await RecipeModel.create(payload);
+    const authorId = payload?.author;
+    const isAuthorExists = await UserModel.findById(authorId);
+
+    if (!isAuthorExists) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "this recipes author doesn't exists");
+    };
+
+    if (!file) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "image must be added");
+    }
+
+    if (!payload) {
+        throw new CustomAppError(httpStatus.NOT_FOUND, "data must be added");
+    }
+
+    const recipeData = {
+        ...payload,
+    };
+
+    if (file) {
+        recipeData.images = file?.path;
+    };
+
+    const res = await RecipeModel.create(recipeData);
 
     return res;
-
 };
 
 const updateRecipeFromDB = async (payload: any, id: string) => {
@@ -53,7 +76,7 @@ const deleteRecipeFromDB = async (id: string) => {
 
 const getAllRecipeFromDB = async () => {
 
-    const res = await RecipeModel.find();
+    const res = await RecipeModel.find().populate("author");
     return res;
 };
 

@@ -143,8 +143,8 @@ const RecipeSchema = new Schema<TRecipe>(
             required: true
         },
         images: {
-            type: [String],
-            default: []
+            type: String,
+            default: " "
         },
         author: {
             type: Schema.Types.ObjectId,

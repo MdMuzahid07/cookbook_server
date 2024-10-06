@@ -44,7 +44,7 @@ export interface TRecipe {
     description: string;
     ingredients: TIngredient[];
     instructions: string[];
-    images: string[];
+    images: string;
     author: Types.ObjectId;
     category: string;
     cookingTime: TCookingTime;
