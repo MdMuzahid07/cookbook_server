@@ -1,31 +1,6 @@
 import { Types } from "mongoose";
 
 
-export interface TRecipe {
-    _id: string;
-    title: string;
-    description: string;
-    ingredients: TIngredient[];
-    instructions: string[];
-    images: string[];
-    author: Types.ObjectId;
-    category: string;
-    cookingTime: TCookingTime;
-    servings: number;
-    ratings: TRatings;
-    comments: TComment[];
-    upvotes: number;
-    downvotes: number;
-    isPremium: boolean;
-    tags: string[];
-    nutritionInfo: TNutritionInfo;
-    videoUrl: string | null;
-    difficulty: string;
-    ingredientChecklist: TIngredientChecklist[];
-    isDeleted: boolean;
-    isPublished: boolean;
-};
-
 export interface TIngredient {
     name: string;
     quantity: string;
@@ -61,5 +36,30 @@ export interface TIngredientChecklist {
     isChecked: boolean;
     customName: string;
     customQuantity: string;
+};
+
+export interface TRecipe {
+    _id: string;
+    title: string;
+    description: string;
+    ingredients: TIngredient[];
+    instructions: string[];
+    images: string[];
+    author: Types.ObjectId;
+    category: string;
+    cookingTime: TCookingTime;
+    servings: number;
+    ratings: TRatings;
+    comments: TComment[];
+    upvotes: number;
+    downvotes: number;
+    isPremium: boolean;
+    tags: string[];
+    nutritionInfo: TNutritionInfo;
+    videoUrl: string | null;
+    difficulty: string;
+    ingredientChecklist: TIngredientChecklist[];
+    isDeleted: boolean;
+    isPublished: boolean;
 };
 
