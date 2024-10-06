@@ -155,16 +155,16 @@ const RecipeSchema = new Schema<TRecipe>(
             ref: "Comment",
             default: []
         },
-        upvotes: {
-            type: Number,
-            default: 0,
-            min: 0
-        },
-        downvotes: {
-            type: Number,
-            default: 0,
-            min: 0
-        },
+        upVotes: [{
+            type: Schema.Types.ObjectId,
+            ref: "Vote",
+            default: []
+        }],
+        downVotes: [{
+            type: Schema.Types.ObjectId,
+            ref: "Vote",
+            default: []
+        }],
         isPremium: {
             type: Boolean,
             default: false

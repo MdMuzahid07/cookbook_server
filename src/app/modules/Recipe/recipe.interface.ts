@@ -50,8 +50,8 @@ export interface TRecipe {
     servings: number;
     ratings: TRatings[];
     comments: TComment[];
-    upvotes: number;
-    downvotes: number;
+    upVotes: Types.ObjectId[];
+    downVotes: Types.ObjectId[];
     isPremium: boolean;
     tags: string[];
     nutritionInfo: TNutritionInfo;

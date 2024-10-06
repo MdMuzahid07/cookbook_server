@@ -48,8 +48,10 @@ export const recipeValidationSchema = z.object({
     servings: z.number().min(1, "servings must be at least 1"),
     ratings: ratingsValidationSchema,
     comments: z.array(commentValidationSchema).optional(),
-    upvotes: z.number().min(0).default(0),
-    downvotes: z.number().min(0).default(0),
+    upvotes: z.array(z.string()).optional(),
+    downvotes: z.array(z.string()).optional(),
+    upvoteCount: z.number().min(0).default(0),
+    downvoteCount: z.number().min(0).default(0),
     isPremium: z.boolean().default(false),
     tags: z.array(z.string()).optional(),
     nutritionInfo: nutritionInfoValidationSchema,
@@ -68,66 +70,68 @@ export const recipeValidationSchema = z.object({
 
 
 const ingredientUpdateValidationSchema = z.object({
-    name: z.string().min(1, "ingredient name is required"),
-    quantity: z.string().min(1, "ingredient quantity is required"),
-    category: z.string().min(1, "ingredient category is required"),
+    name: z.string().min(1, "ingredient name is required").optional(),
+    quantity: z.string().min(1, "ingredient quantity is required").optional(),
+    category: z.string().min(1, "ingredient category is required").optional(),
 });
 
 const cookingTimeUpdateValidationSchema = z.object({
-    prep: z.number().min(0, "preparation time must be a non-negative number"),
-    cook: z.number().min(0, "cooking time must be a non-negative number"),
+    prep: z.number().min(0, "preparation time must be a non-negative number").optional(),
+    cook: z.number().min(0, "cooking time must be a non-negative number").optional(),
 });
 
 const ratingsUpdateValidationSchema = z.object({
-    average: z.number().min(0).max(5).default(0),
-    count: z.number().min(0).default(0),
+    average: z.number().min(0).max(5).default(0).optional(),
+    count: z.number().min(0).default(0).optional(),
 });
 
 const commentUpdateValidationSchema = z.object({
-    userId: z.string().min(1, "user ID is required"),
-    comment: z.string().min(1, "comment is required"),
-    createdAt: z.string(),
-    updatedAt: z.string(),
+    userId: z.string().min(1, "user ID is required").optional(),
+    comment: z.string().min(1, "comment is required").optional(),
+    createdAt: z.string().optional(),
+    updatedAt: z.string().optional(),
 });
 
 const nutritionInfoUpdateValidationSchema = z.object({
-    calories: z.number().min(0, "calories must be a non-negative number"),
-    fat: z.string().min(1, "fat content is required"),
-    carbohydrates: z.string().min(1, "carbohydrate content is required"),
-    protein: z.string().min(1, "protein content is required"),
+    calories: z.number().min(0, "calories must be a non-negative number").optional(),
+    fat: z.string().min(1, "fat content is required").optional(),
+    carbohydrates: z.string().min(1, "carbohydrate content is required").optional(),
+    protein: z.string().min(1, "protein content is required").optional(),
 });
 
 const ingredientChecklistUpdateValidationSchema = z.object({
-    ingredientId: z.string().min(1, "ingredient ID is required"),
-    isChecked: z.boolean().default(false),
+    ingredientId: z.string().min(1, "ingredient ID is required").optional(),
+    isChecked: z.boolean().default(false).optional(),
     customName: z.string().optional(),
     customQuantity: z.string().optional(),
 });
 
 const recipeUpdateValidationSchema = z.object({
-    title: z.string().min(1, "title is required"),
-    description: z.string().min(1, "description is required"),
-    ingredients: z.array(ingredientUpdateValidationSchema),
-    instructions: z.array(z.string()).min(1, "at least one instruction is required"),
+    title: z.string().min(1, "title is required").optional(),
+    description: z.string().min(1, "description is required").optional(),
+    ingredients: z.array(ingredientUpdateValidationSchema).optional(),
+    instructions: z.array(z.string()).min(1, "at least one instruction is required").optional(),
     images: z.array(z.string()).optional(),
-    author: z.string().min(1, "author is required"),
-    category: z.string().min(1, "category is required"),
+    author: z.string().min(1, "author is required").optional(),
+    category: z.string().min(1, "category is required").optional(),
     cookingTime: cookingTimeUpdateValidationSchema,
-    servings: z.number().min(1, "servings must be at least 1"),
+    servings: z.number().min(1, "servings must be at least 1").optional(),
     ratings: ratingsUpdateValidationSchema,
     comments: z.array(commentUpdateValidationSchema).optional(),
-    upvotes: z.number().min(0).default(0),
-    downvotes: z.number().min(0).default(0),
-    isPremium: z.boolean().default(false),
+    upVotes: z.array(z.string()).optional(),
+    downVotes: z.array(z.string()).optional(),
+    upVoteCount: z.number().min(0).default(0).optional(),
+    downVoteCount: z.number().min(0).default(0).optional(),
+    isPremium: z.boolean().default(false).optional(),
     tags: z.array(z.string()).optional(),
     nutritionInfo: nutritionInfoUpdateValidationSchema,
     videoUrl: z.string().nullable().optional(),
     difficulty: z.enum(["Easy", "Medium", "Hard"], {
         required_error: "difficulty is required",
-    }),
+    }).optional(),
     ingredientChecklist: z.array(ingredientChecklistUpdateValidationSchema).optional(),
-    isDeleted: z.boolean().default(false),
-    isPublished: z.boolean().default(true),
+    isDeleted: z.boolean().default(false).optional(),
+    isPublished: z.boolean().default(true).optional(),
 });
 
 

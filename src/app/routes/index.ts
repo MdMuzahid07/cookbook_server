@@ -5,6 +5,7 @@ import { membershipRoutes } from "../modules/membership/membership.routes";
 import { paymentRoutes } from "../modules/payment/payment.routes";
 import { RecipeRouter } from "../modules/Recipe/recipe.routes";
 import { CommentRouter } from "../modules/comments/comments.routes";
+import { VoteRouter } from "../modules/downAndUpVotes/downAndUpVotes.routes";
 
 
 const router = express.Router();
@@ -33,6 +34,10 @@ const moduleRoutes = [
     {
         path: "/comment",
         route: CommentRouter
+    },
+    {
+        path: "/vote",
+        route: VoteRouter
     },
 ];
 

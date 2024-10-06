@@ -97,7 +97,7 @@ const getAllRecipeFromDB = async () => {
 const giveARating = async (token: any, payload: any, recipeId: string) => {
 
     if (!token) {
-        throw new CustomAppError(httpStatus.BAD_REQUEST, "you are unauthorized");
+        throw new CustomAppError(httpStatus.BAD_REQUEST, "you are not unauthorized");
     }
 
     const decoded = jwt.verify(
