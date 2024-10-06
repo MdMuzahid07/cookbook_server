@@ -18,10 +18,9 @@ export interface TRatings {
 };
 
 export interface TComment {
-    userId: Types.ObjectId;
+    recipeId?: Types.ObjectId
+    userId?: Types.ObjectId;
     comment: string;
-    createdAt: string;
-    updatedAt: string;
 };
 
 export interface TNutritionInfo {

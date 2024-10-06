@@ -17,10 +17,9 @@ const ratingsValidationSchema = z.object({
 }).optional();
 
 const commentValidationSchema = z.object({
-    userId: z.string().min(1, "user ID is required"),
-    comment: z.string().min(1, "comment is required"),
-    createdAt: z.string(),
-    updatedAt: z.string(),
+    recipeId: z.string().optional(),
+    userId: z.string().optional(),
+    comment: z.string({ required_error: "comment is required" }),
 });
 
 const nutritionInfoValidationSchema = z.object({
@@ -134,5 +133,6 @@ const recipeUpdateValidationSchema = z.object({
 
 export const RecipeValidation = {
     recipeValidationSchema,
-    recipeUpdateValidationSchema
+    recipeUpdateValidationSchema,
+    commentValidationSchema
 };

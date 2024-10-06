@@ -88,7 +88,8 @@ const getAllRecipeFromDB = async () => {
         path: "ratings.author",
         model: "User",
         select: "name email avatar bio"
-    });
+    }).populate("comments");
+
     return res;
 };
 

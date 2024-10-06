@@ -1,6 +1,5 @@
 import { Schema } from "mongoose";
 import {
-    TComment,
     TCookingTime,
     TIngredient,
     TIngredientChecklist,
@@ -57,21 +56,6 @@ const RatingsSchema = new Schema<TRatings>({
     },
 },
     { _id: false },
-);
-
-const CommentSchema = new Schema<TComment>(
-    {
-        userId: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-            required: true
-        },
-        comment: {
-            type: String,
-            required: true
-        },
-    },
-    { timestamps: true },
 );
 
 const NutritionInfoSchema = new Schema<TNutritionInfo>(
@@ -167,7 +151,8 @@ const RecipeSchema = new Schema<TRecipe>(
             default: [],
         },
         comments: {
-            type: [CommentSchema],
+            type: [],
+            ref: "Comment",
             default: []
         },
         upvotes: {
