@@ -37,17 +37,29 @@ const createDownUpVoteIntoDB = async (token: any, payload: string, recipeId: str
         throw new CustomAppError(httpStatus.BAD_REQUEST, "recipe not exists");
     }
 
+    // prevent duplicate upVote 
+    const isAlreadyUpVoted = isRecipeExists?.upVotes.find((vote: any) => vote?.userId?.toString() === userId);
+    // prevent duplicate downVote 
+    const isAlreadyDownVoted = isRecipeExists?.downVotes.find((vote: any) => vote?.userId?.toString() === userId);
+
     if ((payload as any)?.voteType === "upVote") {
-        // prevent duplicate upVote 
-        const isAlreadyUpVoted = isRecipeExists?.upVotes.find((vote: any) => vote?.userId?.toString() === userId);
+
         if (isAlreadyUpVoted) {
             throw new CustomAppError(httpStatus.BAD_REQUEST, "this recipe has  already received your upvote.");
         }
+
+        // preventing upVote after downVote
+        if (isAlreadyDownVoted) {
+            throw new CustomAppError(httpStatus.BAD_REQUEST, "you can't upVote after downVote");
+        }
+
     } else if ((payload as any)?.voteType === "downVote") {
-        // prevent duplicate downVote 
-        const isAlreadyDownVoted = isRecipeExists?.downVotes.find((vote: any) => vote?.userId?.toString() === userId);
         if (isAlreadyDownVoted) {
             throw new CustomAppError(httpStatus.BAD_REQUEST, "this recipe has already received your downvote.");
+        }
+        // preventing downVote after upVote
+        if (isAlreadyUpVoted) {
+            throw new CustomAppError(httpStatus.BAD_REQUEST, "you can't upVote after upVote");
         }
     }
 
@@ -69,8 +81,6 @@ const createDownUpVoteIntoDB = async (token: any, payload: string, recipeId: str
     }
 
     const res = await isRecipeExists.save();
-
-    // console.log({ responseAfterVoteIdSaveInRecipe: res })
 
     return res;
 };
