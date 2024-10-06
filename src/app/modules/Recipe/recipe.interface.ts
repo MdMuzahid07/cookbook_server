@@ -13,8 +13,8 @@ export interface TCookingTime {
 };
 
 export interface TRatings {
-    average: number;
-    count: number;
+    author?: Types.ObjectId;
+    rating: number;
 };
 
 export interface TComment {
@@ -49,7 +49,7 @@ export interface TRecipe {
     category: string;
     cookingTime: TCookingTime;
     servings: number;
-    ratings: TRatings;
+    ratings: TRatings[];
     comments: TComment[];
     upvotes: number;
     downvotes: number;

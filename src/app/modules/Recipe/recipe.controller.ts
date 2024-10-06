@@ -74,9 +74,29 @@ const getAllRecipe = async (req: Request, res: Response, next: NextFunction) => 
 };
 
 
+const addRating = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const token = req.headers.authorization;
+        const payload = req.body;
+        const id = req.params.id;
+
+        const result = await RecipeService.giveARating(token, payload, id);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "rating added successfully",
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const RecipeController = {
     createRecipe,
     updateARecipe,
     deleteARecipe,
-    getAllRecipe
+    getAllRecipe,
+    addRating
 };

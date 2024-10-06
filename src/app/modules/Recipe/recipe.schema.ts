@@ -44,22 +44,18 @@ const CookingTimeSchema = new Schema<TCookingTime>(
     { _id: false },
 );
 
-const RatingsSchema = new Schema<TRatings>(
-    {
-        average: {
-            type: Number,
-            required: true,
-            default: 0,
-            min: 0,
-            max: 5
-        },
-        count: {
-            type: Number,
-            required: true,
-            default: 0,
-            min: 0
-        },
+const RatingsSchema = new Schema<TRatings>({
+    author: {
+        type: Schema.Types.ObjectId,
+        default: null
     },
+    rating: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 5
+    },
+},
     { _id: false },
 );
 
@@ -166,9 +162,9 @@ const RecipeSchema = new Schema<TRecipe>(
             min: 1
         },
         ratings: {
-            type: RatingsSchema,
+            type: [RatingsSchema],
             required: true,
-            default: { average: 0, count: 0 },
+            default: [],
         },
         comments: {
             type: [CommentSchema],

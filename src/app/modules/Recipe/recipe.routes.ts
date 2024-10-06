@@ -39,5 +39,11 @@ router.patch(
     RecipeController.updateARecipe,
 );
 
+router.patch(
+    "/rating/:id",
+    authorizationGuard(USER_ROLES.user),
+    RecipeController.addRating,
+);
+
 
 export const RecipeRouter = router;

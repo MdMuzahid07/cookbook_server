@@ -14,7 +14,7 @@ const cookingTimeValidationSchema = z.object({
 const ratingsValidationSchema = z.object({
     average: z.number().min(0).max(5).default(0),
     count: z.number().min(0).default(0),
-});
+}).optional();
 
 const commentValidationSchema = z.object({
     userId: z.string().min(1, "user ID is required"),
