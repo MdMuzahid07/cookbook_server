@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { PaymentService } from "./payment.service";
 import UserModel from "../user/user.model";
@@ -6,8 +7,8 @@ const confirmationController = async (req: Request, res: Response) => {
   const result = await PaymentService.confirmationService(req.query.transactionId, req.query.paymentStatus as string);
 
   // adding the membership id to user account, after successfull payment
-  if (result && result?.status === "Active") {
-    await UserModel.findByIdAndUpdate(result?.userId, { membership: result?._id }, { new: true });
+  if (result && (result as any)?.status === "Active") {
+    await UserModel.findByIdAndUpdate((result as any)?.userId, { membership: (result as any)?._id }, { new: true });
   }
 
   res.send(result);

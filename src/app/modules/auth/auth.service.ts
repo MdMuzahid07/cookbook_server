@@ -155,7 +155,7 @@ const resetThePassword = async (password: string, token: string) => {
     // Verify the reset token
     const decoded = jwt.verify(token, config.jwt_reset_password_secret_key as string);
 
-    const userId = decoded?.userId;
+    const userId = (decoded as any)?.userId;
     const user = await UserModel.findById(userId);
 
     if (!user) {
@@ -180,8 +180,8 @@ const changeCurrentPassword = async (currentPass: string, newPass: string, token
 
     const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
 
-    const userId = decoded?.id;
-    const currentPassFromToken = decoded?.password;
+    const userId = (decoded as any)?.id;
+    const currentPassFromToken = (decoded as any)?.password;
     const user = await UserModel.findById(userId);
 
     if (!user) {

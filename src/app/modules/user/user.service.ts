@@ -122,7 +122,7 @@ const followAUser = async (token: any, targetUserId: any) => {
 
     const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
 
-    const userId = decoded?.id;
+    const userId = (decoded as any)?.id;
 
     const currentUser = await UserModel.findById(userId);
     const targetUser = await UserModel.findById(targetUserId);
@@ -158,7 +158,7 @@ const unFollowAUser = async (token: any, targetUserId: any) => {
 
     const decoded = jwt.verify(token, config.jwt_access_token_secret_key as string);
 
-    const userId = decoded?.id;
+    const userId = (decoded as any)?.id;
 
     const isCurrentUserExists = await UserModel.findById(userId);
     const isTargetUserExists = await UserModel.findById(targetUserId);

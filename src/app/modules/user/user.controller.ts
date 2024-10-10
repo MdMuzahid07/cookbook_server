@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "./user.service";
 import config from "../../config";
@@ -10,7 +11,6 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
         const { accessToken, refreshToken, user } = await UserService.createUserIntoDB(req.file, req.body);
 
-        // for saving refresh token in browser cookie
         res.cookie("refreshToken", refreshToken, {
             secure: config.NODE_ENV === "production",
             httpOnly: true,
@@ -20,8 +20,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
             statusCode: httpStatus.OK,
             success: true,
             message: "user registered successfully",
-            token: accessToken,
-            data: user,
+            data: { accessToken, refreshToken, user },
         });
     } catch (error) {
         next(error);
@@ -155,7 +154,7 @@ const publishUnPublishRecipe = async (req: Request, res: Response, next: NextFun
         sendResponse(res, {
             success: true,
             statusCode: httpStatus.OK,
-            message: `recipe, ${result?.title} ${result?.isBlocked ? "unpublished" : "published"}`,
+            message: `recipe, ${result?.title} ${(result as any)?.isBlocked ? "unpublished" : "published"}`,
             data: result,
         });
     } catch (error) {

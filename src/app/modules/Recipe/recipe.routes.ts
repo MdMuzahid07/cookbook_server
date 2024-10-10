@@ -22,7 +22,6 @@ router.post(
 
 router.get(
     "/",
-    authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
     RecipeController.getAllRecipe,
 );
 

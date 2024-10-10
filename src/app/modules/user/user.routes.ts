@@ -10,7 +10,6 @@ const router = express.Router();
 
 router.post(
     "/register",
-    authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
     multerUpload.single("avatar"),
     (req: Request, res: Response, next: NextFunction) => {
         req.body = JSON.parse(req.body.data);
