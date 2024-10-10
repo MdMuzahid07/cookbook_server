@@ -64,5 +64,17 @@ router.patch(
 );
 
 
+router.get(
+    "/",
+    authorizationGuard(USER_ROLES.admin),
+    UserController.getUsers
+);
+
+router.get(
+    "/:id",
+    authorizationGuard(USER_ROLES.admin, USER_ROLES.user),
+    UserController.getASingleUser
+);
+
 
 export const UserRoutes = router;

@@ -320,6 +320,18 @@ const promoteDemoteUserAdminByAdminFromDB = async (token: any, targetUserId: str
 };
 
 
+const getAllUsers = async () => {
+    const res = await UserModel.find();
+    return res;
+};
+
+
+const getASingleUserFromDB = async (id: string) => {
+    const res = await UserModel.findById(id);
+    return res;
+};
+
+
 export const UserService = {
     createUserIntoDB,
     updateAUserInfoFromDB,
@@ -327,5 +339,7 @@ export const UserService = {
     unFollowAUser,
     blockUnBlockUserFromDB,
     publishUnPublishRecipeFromDB,
-    promoteDemoteUserAdminByAdminFromDB
+    promoteDemoteUserAdminByAdminFromDB,
+    getAllUsers,
+    getASingleUserFromDB
 };

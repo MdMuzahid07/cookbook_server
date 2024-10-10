@@ -29,6 +29,43 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 
+const getUsers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const data = await UserService.getAllUsers();
+
+
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "users retrieved successfully",
+            data: data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+const getASingleUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+
+        const data = await UserService.getASingleUserFromDB(id);
+
+
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "user retrieved successfully",
+            data: data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 const updateUserInfoController = async (
     req: Request,
     res: Response,
@@ -155,5 +192,7 @@ export const UserController = {
     unFollowAUserController,
     blockUnBlockUser,
     publishUnPublishRecipe,
-    promoteDemoteUserAdminByAdmin
+    promoteDemoteUserAdminByAdmin,
+    getUsers,
+    getASingleUser
 };
