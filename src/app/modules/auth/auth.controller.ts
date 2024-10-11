@@ -21,8 +21,11 @@ const LoginUser = async (req: Request, res: Response, next: NextFunction) => {
             success: true,
             statusCode: httpStatus.OK,
             message: "user logged in successfully",
-            token: accessToken,
-            data: user,
+            data: {
+                accessToken,
+                refreshToken,
+                user
+            },
         });
     } catch (error) {
         next(error);
