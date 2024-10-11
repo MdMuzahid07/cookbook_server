@@ -40,10 +40,10 @@ const createUserIntoDB = async (file: any, payload: TUser) => {
     // jwt 
     const jwtPayload = {
         id: registeredUserId,
-        email: payload?.email,
-        role: payload?.role,
+        email: userData?.email,
+        role: result?.role,
         name: payload?.name,
-        avatar: payload?.avatar
+        avatar: result?.avatar
     };
 
     const accessToken = jwt.sign(
