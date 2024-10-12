@@ -25,9 +25,9 @@ export interface TComment {
 
 export interface TNutritionInfo {
     calories: number;
-    fat: string;
-    carbohydrates: string;
-    protein: string;
+    fat: number;
+    carbohydrates: number;
+    protein: number;
 };
 
 export interface TIngredientChecklist {

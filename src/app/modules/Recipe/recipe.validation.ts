@@ -24,13 +24,12 @@ const commentValidationSchema = z.object({
 
 const nutritionInfoValidationSchema = z.object({
     calories: z.number().min(0, "calories must be a non-negative number"),
-    fat: z.string().min(1, "fat content is required"),
-    carbohydrates: z.string().min(1, "carbohydrate content is required"),
-    protein: z.string().min(1, "protein content is required"),
+    fat: z.number().min(0, "fat must be a non-negative number"),
+    carbohydrates: z.number().min(0, "carbohydrate must be a non-negative number"),
+    protein: z.number().min(0, "protein must be a non-negative number"),
 });
 
 const ingredientChecklistValidationSchema = z.object({
-    ingredientId: z.string().min(1, "ingredient ID is required"),
     isChecked: z.boolean().default(false),
     customName: z.string().optional(),
     customQuantity: z.string().optional(),
@@ -94,9 +93,9 @@ const commentUpdateValidationSchema = z.object({
 
 const nutritionInfoUpdateValidationSchema = z.object({
     calories: z.number().min(0, "calories must be a non-negative number").optional(),
-    fat: z.string().min(1, "fat content is required").optional(),
-    carbohydrates: z.string().min(1, "carbohydrate content is required").optional(),
-    protein: z.string().min(1, "protein content is required").optional(),
+    fat: z.number().min(0, "fat must be a non-negative number").optional(),
+    carbohydrates: z.number().min(0, "carbohydrate must be a non-negative number").optional(),
+    protein: z.number().min(0, "protein must be a non-negative number").optional(),
 });
 
 const ingredientChecklistUpdateValidationSchema = z.object({

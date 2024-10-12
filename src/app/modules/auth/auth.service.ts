@@ -132,10 +132,10 @@ const passwordReset = async (payload: any) => {
 
     // send mail 
 
-    const resetLink = `${config.frontend_url}/change-password/${resetToken}`;
+    const resetLink = `${config.frontend_url}/reset-password/${resetToken}`;
 
     const response = await transporter.sendMail({
-        from: "mdmuzahid7396@gmail.com",
+        from: config.email_user,
         to: user.email,
         subject: 'Password Reset',
         html: `

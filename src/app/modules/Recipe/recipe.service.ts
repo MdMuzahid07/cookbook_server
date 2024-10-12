@@ -20,7 +20,6 @@ const createRecipeIntoDB = async (file: any, payload: any) => {
 
     const isThisRecipeExists = await RecipeModel.findOne({ author: payload?.author, title: payload?.title, description: payload?.description });
 
-    console.log(isThisRecipeExists, "is this recipe exists");
 
     if (isThisRecipeExists) {
         throw new CustomAppError(httpStatus.BAD_REQUEST, "this recipe already exists");
@@ -143,11 +142,20 @@ const giveARating = async (token: any, payload: any, recipeId: string) => {
     return res;
 };
 
+const getASingleRecipe = async (id: string) => {
+    const res = await RecipeModel.findById(id).populate("author").populate({
+        path: "ratings.author",
+        model: "User",
+        select: "name email avatar bio"
+    }).populate("comments");
+    return res;
+};
 
 export const RecipeService = {
     createRecipeIntoDB,
     updateRecipeFromDB,
     deleteRecipeFromDB,
     getAllRecipeFromDB,
-    giveARating
+    giveARating,
+    getASingleRecipe
 };

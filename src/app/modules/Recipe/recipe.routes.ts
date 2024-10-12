@@ -25,6 +25,12 @@ router.get(
     RecipeController.getAllRecipe,
 );
 
+router.get(
+    "/:id",
+    RecipeController.getARecipe,
+);
+
+
 router.delete(
     "/:id",
     authorizationGuard(USER_ROLES.user, USER_ROLES.admin),

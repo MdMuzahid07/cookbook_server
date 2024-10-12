@@ -66,15 +66,15 @@ const NutritionInfoSchema = new Schema<TNutritionInfo>(
             min: 0
         },
         fat: {
-            type: String,
+            type: Number,
             required: true
         },
         carbohydrates: {
-            type: String,
+            type: Number,
             required: true
         },
         protein: {
-            type: String,
+            type: Number,
             required: true
         },
     },
@@ -83,10 +83,6 @@ const NutritionInfoSchema = new Schema<TNutritionInfo>(
 
 const IngredientChecklistSchema = new Schema<TIngredientChecklist>(
     {
-        ingredientId: {
-            type: String,
-            required: true
-        },
         isChecked: {
             type: Boolean,
             default: false

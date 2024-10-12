@@ -23,6 +23,24 @@ const createRecipe = async (req: Request, res: Response, next: NextFunction) => 
 };
 
 
+const getARecipe = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+
+        const result = await RecipeService.getASingleRecipe(id);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "recipe retrieved successfully by recipe id",
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 const updateARecipe = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const payload = req.body;
@@ -98,5 +116,6 @@ export const RecipeController = {
     updateARecipe,
     deleteARecipe,
     getAllRecipe,
-    addRating
+    addRating,
+    getARecipe
 };
