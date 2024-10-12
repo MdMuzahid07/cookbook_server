@@ -12,15 +12,12 @@ const IngredientSchema = new Schema<TIngredient>(
     {
         name: {
             type: String,
-            required: true
         },
         quantity: {
             type: String,
-            required: true
         },
         category: {
             type: String,
-            required: true
         },
     },
     // this line will prevent separate id creation for sub data(documents)
@@ -31,13 +28,11 @@ const CookingTimeSchema = new Schema<TCookingTime>(
     {
         prep: {
             type: Number,
-            required: true,
-            min: 0
+            default: 0
         },
         cook: {
             type: Number,
-            required: true,
-            min: 0
+            default: 0
         },
     },
     { _id: false },
@@ -62,20 +57,16 @@ const NutritionInfoSchema = new Schema<TNutritionInfo>(
     {
         calories: {
             type: Number,
-            required: true,
-            min: 0
+            default: 0
         },
         fat: {
             type: Number,
-            required: true
         },
         carbohydrates: {
             type: Number,
-            required: true
         },
         protein: {
             type: Number,
-            required: true
         },
     },
     { _id: false },
@@ -103,20 +94,16 @@ const RecipeSchema = new Schema<TRecipe>(
     {
         title: {
             type: String,
-            required: true,
             trim: true
         },
         description: {
             type: String,
-            required: true
         },
         ingredients: {
             type: [IngredientSchema],
-            required: true
         },
         instructions: {
             type: [String],
-            required: true
         },
         images: {
             type: String,
@@ -125,25 +112,20 @@ const RecipeSchema = new Schema<TRecipe>(
         author: {
             type: Schema.Types.ObjectId,
             ref: "User",
-            required: true
         },
         category: {
             type: String,
-            required: true,
             trim: true
         },
         cookingTime: {
             type: CookingTimeSchema,
-            required: true
         },
         servings: {
             type: Number,
-            required: true,
             min: 1
         },
         ratings: {
             type: [RatingsSchema],
-            required: true,
             default: [],
         },
         comments: {
@@ -171,7 +153,6 @@ const RecipeSchema = new Schema<TRecipe>(
         },
         nutritionInfo: {
             type: NutritionInfoSchema,
-            required: true
         },
         videoUrl: {
             type: String,
@@ -179,7 +160,6 @@ const RecipeSchema = new Schema<TRecipe>(
         },
         difficulty: {
             type: String,
-            required: true,
             enum: ["Easy", "Medium", "Hard"],
         },
         ingredientChecklist: {

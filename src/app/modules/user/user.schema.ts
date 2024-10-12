@@ -5,24 +5,20 @@ const UserSchema = new Schema<TUser>(
     {
         name: {
             type: String,
-            required: true,
             trim: true,
         },
         email: {
             type: String,
-            required: true,
             unique: true,
             trim: true,
             lowercase: true,
         },
         password: {
             type: String,
-            required: true,
             minlength: 6,
         },
         bio: {
             type: String,
-            required: true,
             maxLength: 500,
             default: "I'm an great person, with good personality"
         },

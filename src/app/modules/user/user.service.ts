@@ -75,43 +75,58 @@ const createUserIntoDB = async (file: any, payload: TUser) => {
 };
 
 
-const updateAUserInfoFromDB = async (id: string, payload: any) => {
-
+const updateAUserInfoFromDB = async (file: any, id: string, payload: Partial<TUser>) => {
     if (!id) {
-        throw new CustomAppError(httpStatus.NOT_FOUND, "id is required to update profile info");
+        throw new CustomAppError(httpStatus.BAD_REQUEST, "User ID is required to update profile info");
     }
 
-    if (!payload) {
-        throw new CustomAppError(httpStatus.NOT_FOUND, "data is required to update the profile");
-    }
-
-    const isUserExists = await UserModel.findById({ _id: id });
+    const isUserExists = await UserModel.findById(id).lean();
 
     if (!isUserExists) {
-        throw new CustomAppError(httpStatus.NOT_FOUND, "this user not exists to update");
+        throw new CustomAppError(httpStatus.NOT_FOUND, "User does not exist");
+    }
+
+    const updatedData = { ...payload };
+
+    if (file && file.path) {
+        updatedData.avatar = file.path;
     }
 
     const profileInfoUpdateResponse = await UserModel.findByIdAndUpdate(
         id,
-        // we use $set operator to update specific field
-        { $set: payload },
+        { $set: updatedData },
         {
             new: true,
-            runValidators: true
+            runValidators: true,
+            //  returns a plain JS object
+            lean: true
         }
     );
 
-    const result = profileInfoUpdateResponse?.toObject() as Partial<TUser>;
+    if (!profileInfoUpdateResponse) {
+        throw new CustomAppError(httpStatus.INTERNAL_SERVER_ERROR, "failed to update user profile");
+    }
 
-    // removing some property from response after save into DB
-    if (result) {
-        delete result.__v;
-        delete result.createdAt;
-        delete result.updatedAt;
-    };
+    const result = profileInfoUpdateResponse as Partial<TUser>;
+
+    // Remove unwanted fields
+    delete result.__v;
+    delete result.createdAt;
+    delete result.updatedAt;
 
     return result;
 };
+
+
+
+
+
+
+
+
+
+
+
 
 
 const followAUser = async (token: any, targetUserId: any) => {

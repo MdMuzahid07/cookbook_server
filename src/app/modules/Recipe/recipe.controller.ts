@@ -44,9 +44,11 @@ const getARecipe = async (req: Request, res: Response, next: NextFunction) => {
 const updateARecipe = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const payload = req.body;
-        const id = req.params.id;
+        const { id } = req.params;
 
-        const result = await RecipeService.updateRecipeFromDB(payload, id);
+        console.log(id, req.body);
+
+        const result = await RecipeService.updateRecipeFromDB(id, payload);
 
         sendResponse(res, {
             success: true,
@@ -61,7 +63,7 @@ const updateARecipe = async (req: Request, res: Response, next: NextFunction) =>
 
 const deleteARecipe = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const id = req.params.id;
+        const { id } = req.params;
 
         const result = await RecipeService.deleteRecipeFromDB(id);
 

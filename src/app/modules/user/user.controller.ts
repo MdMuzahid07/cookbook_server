@@ -65,6 +65,17 @@ const getASingleUser = async (req: Request, res: Response, next: NextFunction) =
 };
 
 
+
+
+
+
+
+
+
+
+
+
+
 const updateUserInfoController = async (
     req: Request,
     res: Response,
@@ -74,7 +85,7 @@ const updateUserInfoController = async (
         const { id } = req.params;
         const payload = req.body;
 
-        const result = await UserService.updateAUserInfoFromDB(id, payload);
+        const result = await UserService.updateAUserInfoFromDB(req.file, id, payload);
 
         sendResponse(res, {
             success: true,
@@ -86,6 +97,15 @@ const updateUserInfoController = async (
         next(error);
     }
 };
+
+
+
+
+
+
+
+
+
 
 
 const followAUserController = async (req: Request, res: Response, next: NextFunction) => {

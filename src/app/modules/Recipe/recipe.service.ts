@@ -42,13 +42,14 @@ const createRecipeIntoDB = async (file: any, payload: any) => {
     return res;
 };
 
-const updateRecipeFromDB = async (payload: any, id: string) => {
+const updateRecipeFromDB = async (id: string, payload: any) => {
 
     const isThisRecipeExists = await RecipeModel.findById(id);
 
     if (!isThisRecipeExists) {
         throw new CustomAppError(httpStatus.NOT_FOUND, "this recipe does't exists");
     };
+
 
     const res = await RecipeModel.findByIdAndUpdate(
         id,
@@ -72,7 +73,6 @@ const deleteRecipeFromDB = async (id: string) => {
     if (!isThisRecipeExists) {
         throw new CustomAppError(httpStatus.NOT_FOUND, "this recipe does't exists");
     };
-
 
     const res = await RecipeModel.findByIdAndDelete(id);
 

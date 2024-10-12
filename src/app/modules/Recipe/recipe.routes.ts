@@ -40,7 +40,6 @@ router.delete(
 router.patch(
     "/:id",
     authorizationGuard(USER_ROLES.user, USER_ROLES.admin),
-    requestValidator(RecipeValidation.recipeUpdateValidationSchema),
     RecipeController.updateARecipe,
 );
 
