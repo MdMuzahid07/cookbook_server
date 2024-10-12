@@ -1,19 +1,28 @@
 import MembershipModel from "../membership/membership.model";
+import UserModel from "../user/user.model";
 import { paymentVerification } from "./payment.utils";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const confirmationService = async (transactionId: any, paymentStatus: string) => {
 
-    // verifying payment
-    const verifyResponse = await paymentVerification(transactionId);
+  // verifying payment
+  const verifyResponse = await paymentVerification(transactionId);
 
-    // updating the membership status to Active after successfull payment
-    let result;
-    if (verifyResponse && verifyResponse?.pay_status === "Successful") {
-        result = await MembershipModel.findOneAndUpdate({ transactionId }, { status: "Active" }, { new: true });
-    }
+  // updating the membership status to Active after successfull payment
+  let result;
+  if (verifyResponse && verifyResponse?.pay_status === "Successful") {
+    result = await MembershipModel.findOneAndUpdate({ transactionId }, { status: "Active" }, { new: true });
+  }
 
-    return `
+
+  // adding the membership id to user account, after successfull payment
+  if (result && (result as any)?.status === "Active") {
+    await UserModel.findByIdAndUpdate((result as any)?.userId, { membership: (result as any)?._id }, { new: true });
+  }
+
+
+
+  return `
     <body 
     style="font-family: 
     sans-serif;
@@ -44,5 +53,5 @@ const confirmationService = async (transactionId: any, paymentStatus: string) =>
 
 
 export const PaymentService = {
-    confirmationService
+  confirmationService
 };

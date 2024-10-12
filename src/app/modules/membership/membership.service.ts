@@ -40,13 +40,9 @@ const createMembershipIntoDB = async (payload: TMembership) => {
         payableAmount,
     };
 
-
     const paymentResponse = await paymentInitialization(paymentInfo);
 
-    console.log(paymentResponse);
-
-
-    return res;
+    return { res, paymentResponse };
 };
 
 
