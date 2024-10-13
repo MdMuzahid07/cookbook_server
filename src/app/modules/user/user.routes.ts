@@ -70,7 +70,7 @@ router.patch(
 
 router.get(
     "/",
-    authorizationGuard(USER_ROLES.admin),
+    // authorizationGuard(USER_ROLES.admin),
     UserController.getUsers
 );
 
