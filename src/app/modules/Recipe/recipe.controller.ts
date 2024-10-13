@@ -46,8 +46,6 @@ const updateARecipe = async (req: Request, res: Response, next: NextFunction) =>
         const payload = req.body;
         const { id } = req.params;
 
-        console.log(id, req.body);
-
         const result = await RecipeService.updateRecipeFromDB(id, payload);
 
         sendResponse(res, {

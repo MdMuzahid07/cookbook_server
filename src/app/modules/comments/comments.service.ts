@@ -44,11 +44,12 @@ const createACommentIntoDB = async (token: any, payload: any, recipeId: string) 
         recipeId: recipeId
     };
 
-    const isCommentExists = await CommentModel.findOne({ userId: id });
+    // const isCommentExists = await CommentModel.findOne({ userId: id, recipeId: recipeId });
 
-    if (isCommentExists) {
-        throw new CustomAppError(httpStatus.BAD_REQUEST, "already commented");
-    }
+    // if (isCommentExists) {
+    //     throw new CustomAppError(httpStatus.BAD_REQUEST, "already commented");
+    // }
+
 
     const response = await CommentModel.create(commentData);
     const commentId = response?._id;

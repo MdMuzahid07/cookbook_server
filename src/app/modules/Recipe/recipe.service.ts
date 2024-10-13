@@ -143,13 +143,26 @@ const giveARating = async (token: any, payload: any, recipeId: string) => {
 };
 
 const getASingleRecipe = async (id: string) => {
-    const res = await RecipeModel.findById(id).populate("author").populate({
-        path: "ratings.author",
-        model: "User",
-        select: "name email avatar bio"
-    }).populate("comments");
+    const res = await RecipeModel.findById(id)
+        .populate("author")
+        .populate({
+            path: "ratings.author",
+            model: "User",
+            select: "name email avatar bio"
+        })
+        .populate({
+            path: "comments",
+            populate: {
+                path: "userId",
+                model: "User",
+                select: "name email avatar"
+            }
+        });
+
     return res;
 };
+
+
 
 export const RecipeService = {
     createRecipeIntoDB,

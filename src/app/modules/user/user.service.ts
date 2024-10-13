@@ -342,7 +342,7 @@ const getAllUsers = async () => {
 
 
 const getASingleUserFromDB = async (id: string) => {
-    const res = await UserModel.findById(id);
+    const res = await UserModel.findById(id).populate("membership");
     return res;
 };
 
