@@ -83,11 +83,13 @@ const deleteRecipeFromDB = async (id: string) => {
 
 const getAllRecipeFromDB = async () => {
 
-    const res = await RecipeModel.find().populate("author").populate({
-        path: "ratings.author",
-        model: "User",
-        select: "name email avatar bio"
-    }).populate("comments");
+    const res = await RecipeModel.find()
+        .sort({ createdAt: -1 })
+        .populate("author").populate({
+            path: "ratings.author",
+            model: "User",
+            select: "name email avatar bio"
+        }).populate("comments");
 
     return res;
 };
