@@ -10,7 +10,7 @@ const createMembershipIntoDB = async (payload: TMembership) => {
     const userId = payload?.userId;
     const isExists = await MembershipModel.findOne({ userId });
 
-    if (isExists) {
+    if (isExists && isExists?.status === "Active") {
         throw new CustomAppError(httpStatus.BAD_REQUEST, "already an premium member");
     }
 
