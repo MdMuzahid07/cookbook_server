@@ -20,6 +20,7 @@ This server is built with Express and TypeScript, providing a secure and efficie
 - **Node.js**: JavaScript runtime for building the server.
 - **Express**: Web framework for building APIs.
 - **MongoDB**: NoSQL database for storing data.
+- **Mongoose ODM**: ODM for MongoDB.
 - **TypeScript**: Adds type safety to JavaScript.
 - **Bcrypt**: Secure password hashing.
 - **Cloudinary**: Media management and storage.
