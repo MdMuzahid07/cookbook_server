@@ -1,6 +1,6 @@
 
 ```markdown
-# Recipe Sharing Community - CookBook Server
+# Recipe Sharing Community - CookBook Server(Back-end)
 
 Welcome to the **Recipe Sharing Community** server! This backend application powers the Cookbook, a platform for culinary enthusiasts to share, discover, and manage recipes. 
 
